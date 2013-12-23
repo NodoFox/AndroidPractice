@@ -1,7 +1,10 @@
 package com.nodovitt.geoquiz;
 
+import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -34,11 +37,16 @@ public class QuizMainActivity extends Activity {
         mQuestionTextView.setText(question);
     }
 
+    @TargetApi(11)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_main);
 
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+            ActionBar a = getActionBar();
+            a.setTitle("Water Bodies");
+        }
         // updating from the previous state
         if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(INDEX);
