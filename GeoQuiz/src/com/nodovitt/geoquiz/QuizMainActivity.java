@@ -42,6 +42,7 @@ public class QuizMainActivity extends Activity {
         // updating from the previous state
         if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(INDEX);
+            isCheated = savedInstanceState.getBoolean(CheatActivity.IS_CHEATED);
         }
         Log.d(TAG, "onCreate(Bundle savedInstanceState) called");
         // getting the view and setting the question on the view, once.
@@ -139,6 +140,7 @@ public class QuizMainActivity extends Activity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(INDEX, mCurrentIndex);
+        outState.putBoolean(CheatActivity.IS_CHEATED, isCheated);
         Log.d(TAG, "onSaveInstanceState() called");
     }
 

@@ -21,11 +21,15 @@ public class CheatActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cheat);
         
+        if(savedInstanceState!=null){
+            isAnswerShown = savedInstanceState.getBoolean(IS_CHEATED);
+        }
+        
         showAnswer = (Button) findViewById(R.id.showAnswerButton);
         answer = getIntent().getBooleanExtra(QuizMainActivity.IS_ANSWER_TRUE, false);
         answerTV = (TextView) findViewById(R.id.answerTextView);
         showAnswer.setOnClickListener(new View.OnClickListener() {
-            
+        
             @Override
             public void onClick(View v) {
                 isAnswerShown = true;
@@ -42,6 +46,12 @@ public class CheatActivity extends Activity {
         Intent i = new Intent();
         i.putExtra(IS_CHEATED, isAnswerShown);
         setResult(Activity.RESULT_OK,i);
+    }
+    
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(IS_CHEATED, isAnswerShown);
     }
     @Override
     protected void onPause(){
