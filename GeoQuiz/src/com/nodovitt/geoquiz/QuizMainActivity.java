@@ -45,7 +45,7 @@ public class QuizMainActivity extends Activity {
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
             ActionBar a = getActionBar();
-            a.setTitle("Water Bodies");
+            a.setSubtitle("Water Bodies");
         }
         // updating from the previous state
         if (savedInstanceState != null) {
