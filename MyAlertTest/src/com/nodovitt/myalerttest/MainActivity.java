@@ -25,16 +25,21 @@ public class MainActivity extends Activity {
     public void setAlarm() {
         AlarmManager alarm = (AlarmManager) this
                 .getSystemService(Context.ALARM_SERVICE);
+
+        Intent i = new Intent(this, NotificationReceiver.class);
+        i.setAction(NotificationReceiver.MYACTION);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 0, i,
+                PendingIntent.FLAG_CANCEL_CURRENT);
         
-        Intent i = new Intent(this,NotificationReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, 0);
         Calendar calendar = Calendar.getInstance();
         long now = calendar.getTimeInMillis();
-        
-        calendar.set(2013,12,23,10,27,0);
+
+        calendar.set(2013, 12, 23, 10, 27, 0);
         long when = calendar.getTimeInMillis();
-        Log.d("MainActivity","setAlarm() - TimeNow: "+now+ " TimeWhen: "+System.currentTimeMillis());
-        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+10000, pendingIntent);
+        Log.d("MainActivity", "setAlarm() - TimeNow: " + now + " TimeWhen: "
+                + System.currentTimeMillis());
+        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 40000,
+                pendingIntent);
     }
 
     @Override
