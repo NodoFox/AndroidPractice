@@ -1,7 +1,6 @@
 package com.nodovitt.myalerttest;
 
 import java.util.Calendar;
-import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -11,15 +10,37 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends Activity {
 
+    private Button addTextB;
+    private EditText addTextEt;
+    private String userText;
+    public static final String INPUT_TEXT = "com.nodovitt.myalerttext.INPUT_TEXT";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setAlarm();
+        
+        addTextEt = (EditText) findViewById(R.id.addTextEt);
+        
+        
+        addTextB = (Button) findViewById(R.id.addTextButton);
+        addTextB.setOnClickListener(new View.OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                userText = addTextEt.getText().toString();
+                if(!userText.equals("")){
+                    setAlarm();
+                }
+                addTextEt.setText("");
+            }
+        });
     }
 
     public void setAlarm() {
@@ -28,6 +49,8 @@ public class MainActivity extends Activity {
 
         Intent i = new Intent(this, NotificationReceiver.class);
         i.setAction(NotificationReceiver.MYACTION);
+        i.putExtra(INPUT_TEXT, userText);
+        
         PendingIntent pendingIntent = PendingIntent.getService(this, 0, i,
                 PendingIntent.FLAG_CANCEL_CURRENT);
         
@@ -38,7 +61,7 @@ public class MainActivity extends Activity {
         long when = calendar.getTimeInMillis();
         Log.d("MainActivity", "setAlarm() - TimeNow: " + now + " TimeWhen: "
                 + System.currentTimeMillis());
-        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 40000,
+        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 10000,
                 pendingIntent);
     }
 
