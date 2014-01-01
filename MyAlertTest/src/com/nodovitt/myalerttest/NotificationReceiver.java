@@ -2,6 +2,7 @@ package com.nodovitt.myalerttest;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -20,6 +21,7 @@ public class NotificationReceiver extends Service {
      * Log.d("NotificationReceiver","started"); }
      */
 
+    private Notification noti;
     public static final String MYACTION = "com.nodovitt.myalerttest.MYACTION";
 
     /*
@@ -47,16 +49,26 @@ public class NotificationReceiver extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         
+        
         Log.d("Service", "onStartCommand()");
         String userText = intent.getStringExtra(MainActivity.INPUT_TEXT);
         Log.d("Service", userText);
-        Notification noti = new Notification.Builder(this)
+        
+        Intent intentBack = new Intent("com.nodovitt.myalerttest.SNOOZERECEIVER");
+        intentBack.setAction("com.nodovitt.myalerttest.SNOOZERECEIVER");
+        intentBack.putExtra(MainActivity.INPUT_TEXT, userText);
+        
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intentBack, 0);
+        
+        noti = new Notification.Builder(this)
                 .setContentTitle("ALERT")
                 .setContentText(userText)
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .addAction(R.drawable.ic_launcher, "Snooze", pendingIntent)
                 .build();
 
+        
         NotificationManager nM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         nM.notify(0, noti);
 

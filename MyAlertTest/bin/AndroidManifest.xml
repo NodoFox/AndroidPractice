@@ -29,7 +29,11 @@
                 <action android:name="com.nodovitt.myalerttest.MYACTION" />
             </intent-filter>
         </activity>
+        
         <service android:name=".NotificationReceiver" />
+  
+
+        
     </application>
 
 </manifest>

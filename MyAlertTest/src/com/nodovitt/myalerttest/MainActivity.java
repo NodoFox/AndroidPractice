@@ -5,8 +5,10 @@ import java.util.Calendar;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -20,15 +22,14 @@ public class MainActivity extends Activity {
     private EditText addTextEt;
     private String userText;
     public static final String INPUT_TEXT = "com.nodovitt.myalerttext.INPUT_TEXT";
+
+    private BroadcastReceiver br;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         
         addTextEt = (EditText) findViewById(R.id.addTextEt);
-        
-        
         addTextB = (Button) findViewById(R.id.addTextButton);
         addTextB.setOnClickListener(new View.OnClickListener() {
             
@@ -41,6 +42,19 @@ public class MainActivity extends Activity {
                 addTextEt.setText("");
             }
         });
+        
+        //Broadcast
+        br = new BroadcastReceiver(){
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d("MainActivity","onReceive() ");
+                //cancel(0);
+            }
+            
+        };
+        
+        registerReceiver(br, new IntentFilter("com.nodovitt.myalerttest.SNOOZERECEIVER"));
     }
 
     public void setAlarm() {
@@ -65,6 +79,7 @@ public class MainActivity extends Activity {
                 pendingIntent);
     }
 
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
