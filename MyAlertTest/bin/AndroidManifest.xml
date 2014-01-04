@@ -31,6 +31,13 @@
         </activity>
         
         <service android:name=".NotificationReceiver" />
+        <receiver 
+            android:name=".AlertSetterReceiver">
+            <intent-filter >
+                <action android:name="com.nodovitt.myalerttest.ALERTSETTER"></action>
+            </intent-filter>
+            
+        </receiver>
   
 
         

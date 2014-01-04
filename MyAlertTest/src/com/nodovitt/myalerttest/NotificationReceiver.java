@@ -54,8 +54,8 @@ public class NotificationReceiver extends Service {
         String userText = intent.getStringExtra(MainActivity.INPUT_TEXT);
         Log.d("Service", userText);
         
-        Intent intentBack = new Intent("com.nodovitt.myalerttest.SNOOZERECEIVER");
-        intentBack.setAction("com.nodovitt.myalerttest.SNOOZERECEIVER");
+        Intent intentBack = new Intent("com.nodovitt.myalerttest.AlertSetterReceiver");
+        intentBack.setAction("com.nodovitt.myalerttest.ALERTSETTER");
         intentBack.putExtra(MainActivity.INPUT_TEXT, userText);
         
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intentBack, 0);
@@ -65,7 +65,9 @@ public class NotificationReceiver extends Service {
                 .setContentText(userText)
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .addAction(R.drawable.ic_launcher, "Snooze", pendingIntent)
+                .addAction(0, "Snooze", pendingIntent)
+                .addAction(0, "Action 2", pendingIntent)
+                .addAction(0, "Action 3", pendingIntent)
                 .build();
 
         
