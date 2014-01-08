@@ -37,53 +37,19 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 userText = addTextEt.getText().toString();
                 if(!userText.equals("")){
-                    setAlarm();
+                    sendBroadcastToSetAlarm();
                 }
                 addTextEt.setText("");
             }
         });
-        
-        //Broadcast
-        br = new BroadcastReceiver(){
-
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Log.d("MainActivity","onReceive() ");
-                //cancel(0);
-            }
-            
-        };
-        
-        registerReceiver(br, new IntentFilter("com.nodovitt.myalerttest.SNOOZERECEIVER"));
     }
 
-    public void setAlarm() {
-        AlarmManager alarm = (AlarmManager) this
-                .getSystemService(Context.ALARM_SERVICE);
-
-        Intent i = new Intent(this, NotificationReceiver.class);
-        i.setAction(NotificationReceiver.MYACTION);
-        i.putExtra(INPUT_TEXT, userText);
-        
-        PendingIntent pendingIntent = PendingIntent.getService(this, 0, i,
-                PendingIntent.FLAG_CANCEL_CURRENT);
-        
-        Calendar calendar = Calendar.getInstance();
-        long now = calendar.getTimeInMillis();
-
-        calendar.set(2013, 12, 23, 10, 27, 0);
-        long when = calendar.getTimeInMillis();
-        Log.d("MainActivity", "setAlarm() - TimeNow: " + now + " TimeWhen: "
-                + System.currentTimeMillis());
-        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 10000,
-                pendingIntent);
+    public void sendBroadcastToSetAlarm() {        
+        Intent i = new Intent("com.nodovitt.myalerttest.ALERTSETTER");
+        i.putExtra("NOTIFY", userText);
+        sendBroadcast(i);
     }
 
-    @Override
-    protected void onPause(){
-        super.onPause();
-        unregisterReceiver(br);
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

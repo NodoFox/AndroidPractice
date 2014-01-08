@@ -4,8 +4,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.os.IBinder;
@@ -48,16 +46,12 @@ public class NotificationReceiver extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        
-        
-        Log.d("Service", "onStartCommand()");
-        String userText = intent.getStringExtra(MainActivity.INPUT_TEXT);
-        Log.d("Service", userText);
-        
-        Intent intentBack = new Intent("com.nodovitt.myalerttest.AlertSetterReceiver");
-        intentBack.setAction("com.nodovitt.myalerttest.ALERTSETTER");
-        intentBack.putExtra(MainActivity.INPUT_TEXT, userText);
-        
+
+        String userText = intent.getStringExtra("NOTIFY");
+
+        Intent intentBack = new Intent("com.nodovitt.myalerttest.ALERTSETTER");
+        intentBack.putExtra("NOTIFY", userText+" ".toString());
+        Log.d("ALERT", intentBack.getStringExtra("NOTIFY"));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intentBack, 0);
         
         noti = new Notification.Builder(this)
@@ -65,15 +59,14 @@ public class NotificationReceiver extends Service {
                 .setContentText(userText)
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .addAction(0, "Snooze", pendingIntent)
-                .addAction(0, "Action 2", pendingIntent)
-                .addAction(0, "Action 3", pendingIntent)
+                .addAction(R.drawable.ic_launcher, "S", pendingIntent)
+                .addAction(R.drawable.ic_launcher, "A", pendingIntent)
+                .addAction(R.drawable.ic_launcher, "B", pendingIntent)
                 .build();
 
         
         NotificationManager nM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         nM.notify(0, noti);
-
         stopSelf();
         return START_STICKY;
     }

@@ -29,18 +29,17 @@
                 <action android:name="com.nodovitt.myalerttest.MYACTION" />
             </intent-filter>
         </activity>
-        
-        <service android:name=".NotificationReceiver" />
-        <receiver 
-            android:name=".AlertSetterReceiver">
-            <intent-filter >
-                <action android:name="com.nodovitt.myalerttest.ALERTSETTER"></action>
-            </intent-filter>
-            
-        </receiver>
-  
 
-        
+        <service android:name=".NotificationReceiver" />
+
+        <receiver android:name=".AlertSetterReceiver" >
+            <intent-filter>
+                <action android:name="com.nodovitt.myalerttest.ALERTSETTER" >
+                </action>
+            </intent-filter>
+        </receiver>
+               
+
     </application>
 
 </manifest>

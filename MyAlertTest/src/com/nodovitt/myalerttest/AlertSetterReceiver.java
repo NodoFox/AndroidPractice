@@ -12,32 +12,30 @@ import android.util.Log;
 public class AlertSetterReceiver extends BroadcastReceiver {
 
     Context c;
+    String notificationText = "some default text";
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Log.d("AlertSetterReceiver", "onReceive()");
         c = context;
-        setAlarm();
+        if(intent.getAction().equals("com.nodovitt.myalerttest.ALERTSETTER")){
+            notificationText = intent.getStringExtra("NOTIFY");
+            
+            Log.d("Alert", notificationText+"blah");
+            callServiceToSetAlarm();
+        }
     }
 
-    public void setAlarm() {
+    public void callServiceToSetAlarm() {
         AlarmManager alarm = (AlarmManager) c.getSystemService(Context.ALARM_SERVICE);
 
-        Intent i = new Intent(c, NotificationReceiver.class);
-        i.setAction(NotificationReceiver.MYACTION);
-        i.putExtra(MainActivity.INPUT_TEXT, "HELO");
+        Intent i = new Intent(c,NotificationReceiver.class);
+        i.putExtra("NOTIFY", notificationText);
 
         PendingIntent pendingIntent = PendingIntent.getService(c, 0, i,
                 PendingIntent.FLAG_CANCEL_CURRENT);
-
-        Calendar calendar = Calendar.getInstance();
-        long now = calendar.getTimeInMillis();
-
-        calendar.set(2013, 12, 23, 10, 27, 0);
-        long when = calendar.getTimeInMillis();
-        Log.d("MainActivity", "setAlarm() - TimeNow: " + now + " TimeWhen: "
-                + System.currentTimeMillis());
-        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 10000,
+       
+        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 4000,
                 pendingIntent);
+        Log.d("Alert","callServiceTosetAlarm()");
     }
 }
